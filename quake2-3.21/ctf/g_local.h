@@ -853,7 +853,7 @@ typedef struct
 	int			health;
 	int			max_health;
 	int			savedFlags;
-
+	int			teamNum; //aal added for team game
 	int			selected_item;
 	int			inventory[MAX_ITEMS];
 
@@ -982,7 +982,7 @@ struct gclient_s
 	int			flood_whenhead;		// head pointer for when said
 
 	float		respawn_time;		// can respawn when time > this
-
+	int			teamNum;			//aal team number
 //ZOID
 	void		*ctf_grapple;		// entity of grapple
 	int			ctf_grapplestate;		// true if pulling

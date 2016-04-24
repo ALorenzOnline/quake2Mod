@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 #include "g_local.h"
-
+int a =0;
 
 /*
 =================
@@ -293,6 +293,7 @@ void fire_shotgun (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int k
 
 	for (i = 0; i < count; i++)
 		fire_lead (self, start, aimdir, damage, kick, TE_SHOTGUN, hspread, vspread, mod);
+
 }
 
 
@@ -374,6 +375,8 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 	bolt->think = G_FreeEdict;
 	bolt->dmg = damage;
 	bolt->classname = "bolt";
+	
+	
 	if (hyper)
 		bolt->spawnflags = 1;
 	gi.linkentity (bolt);
@@ -476,10 +479,14 @@ static void Grenade_Touch (edict_t *ent, edict_t *other, cplane_t *plane, csurfa
 		{
 			gi.sound (ent, CHAN_VOICE, gi.soundindex ("weapons/grenlb1b.wav"), 1, ATTN_NORM, 0);
 		}
+		
+		
 		return;
 	}
 
 	ent->enemy = other;
+	fire_bfg (ent,ent->s.origin -1, ent->s.origin, 4, 4,3);
+
 	Grenade_Explode (ent);
 }
 
@@ -584,8 +591,12 @@ void rocket_touch (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *su
 		PlayerNoise(ent->owner, ent->s.origin, PNOISE_IMPACT);
 
 	// calculate position for the explosion entity
+	
 	VectorMA (ent->s.origin, -0.02, ent->velocity, origin);
-	fire_grenade(ent,ent->s.origin,ent->s.origin,5,5,5,5);
+	
+	for( a = 0; a < 4 ; a = a + 1 ){
+		fire_grenade(ent,ent->s.origin,ent->s.origin,2,3,5,5);
+	}
 
 	if (other->takedamage)
 	{

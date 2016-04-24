@@ -516,15 +516,18 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 	}
 	else if (client)
 	{
+		
 		if (!(targ->flags & FL_GODMODE) && (take))
 			targ->pain (targ, attacker, knockback, take);
+		
 	}
 	else if (take)
 	{
 		if (targ->pain)
 			targ->pain (targ, attacker, knockback, take);
+		
 	}
-
+	
 	// add to the damage inflicted on a player this frame
 	// the total will be turned into screen blends and view angle kicks
 	// at the end of the frame

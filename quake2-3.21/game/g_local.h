@@ -883,12 +883,12 @@ struct gclient_s
 	// known to server
 	player_state_t	ps;				// communicated by server to clients
 	int				ping;
-
+	
 	// private to game
 	client_persistant_t	pers;
 	client_respawn_t	resp;
 	pmove_state_t		old_pmove;	// for detecting out-of-pmove changes
-
+	int				teamNumber;     // aal Added the team number of the player
 	qboolean	showscores;			// set layout stat
 	qboolean	showinventory;		// set layout stat
 	qboolean	showhelp;
@@ -973,7 +973,7 @@ struct edict_s
 
 	qboolean	inuse;
 	int			linkcount;
-
+	//int			frozenCounter;		//aal used to detect if a player should be frozen
 	// FIXME: move these fields to a server private sv_entity_t
 	link_t		area;				// linked to a division node or leaf
 	
@@ -1008,7 +1008,7 @@ struct edict_s
 	char		*message;
 	char		*classname;
 	int			spawnflags;
-
+	int			teamNum;
 	float		timestamp;
 
 	float		angle;			// set in qe3, -1 = up, -2 = down

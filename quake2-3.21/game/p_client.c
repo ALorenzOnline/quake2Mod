@@ -497,9 +497,16 @@ void LookAtKiller (edict_t *self, edict_t *inflictor, edict_t *attacker)
 ==================
 player_die
 ==================
-*/
+ aal remove death? Removing Death worked but now I need to alter this function
+ to act upon a negative health score such as the freezing mechanics.
+ */
 void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)
 {
+	
+	if(self->health <= 0){
+		self->health = 100;
+	}
+	/*
 	int		n;
 
 	VectorClear (self->avelocity);
@@ -592,6 +599,7 @@ void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damag
 	self->deadflag = DEAD_DEAD;
 
 	gi.linkentity (self);
+	*/
 }
 
 //=======================================================================
@@ -709,7 +717,10 @@ float	PlayersRangeFromSpot (edict_t *spot)
 		if (!player->inuse)
 			continue;
 
-		if (player->health <= 0)
+		if (player->health <= 0)//aal switched from 0 this is to help brevent the server from registering a death
+			//player->frozenCounter = 50;
+			//player->speed = 0; //aal player can not move?
+			//player->health = 100; //aal added this in so when the player is frozen they will get some health back.
 			continue;
 
 		VectorSubtract (spot->s.origin, player->s.origin, v);

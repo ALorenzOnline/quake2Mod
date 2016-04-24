@@ -632,7 +632,7 @@ void InitClientPersistant (gclient_t *client)
 	client->pers.max_bullets	= 200;
 	client->pers.max_shells		= 100;
 	client->pers.max_rockets	= 50;
-	client->pers.max_grenades	= 50;
+	client->pers.max_grenades	= 0;//aal can't hold a grenade unless they have the potato 
 	client->pers.max_cells		= 200;
 	client->pers.max_slugs		= 50;
 
@@ -1103,7 +1103,7 @@ void PutClientInServer (edict_t *ent)
 	client->pers = saved;
 	if (client->pers.health <= 0)
 		InitClientPersistant(client);
-	client->resp = resp;
+		client->resp = resp;
 
 	// copy some data from the client to the entity
 	FetchClientEntData (ent);
@@ -1229,7 +1229,7 @@ void ClientBeginDeathmatch (edict_t *ent)
 	}
 
 	gi.bprintf (PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
-
+	gi.bprintf (PRINT_HIGH, "%s entered the game\n", ent->client->teamNum);//aal print teamNumber
 	// make sure all view stuff is valid
 	ClientEndServerFrame (ent);
 }
@@ -1252,6 +1252,8 @@ void ClientBegin (edict_t *ent)
 	if (deathmatch->value)
 	{
 		ClientBeginDeathmatch (ent);
+		ent->client->teamNum = 1;//aal set a team number
+		gi.dprintf("%s playerNum \n",ent->client->teamNum);//set a team number
 		return;
 	}
 
@@ -1423,6 +1425,7 @@ qboolean ClientConnect (edict_t *ent, char *userinfo)
 		gi.dprintf ("%s connected\n", ent->client->pers.netname);
 
 	ent->client->pers.connected = true;
+	
 	return true;
 }
 
