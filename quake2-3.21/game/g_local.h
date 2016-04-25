@@ -862,6 +862,7 @@ typedef struct
 	int			game_helpchanged;
 	int			helpchanged;
 
+
 	qboolean	spectator;			// client is a spectator
 } client_persistant_t;
 
@@ -872,7 +873,6 @@ typedef struct
 	int			enterframe;			// level.framenum the client entered the game
 	int			score;				// frags, etc
 	vec3_t		cmd_angles;			// angles sent over in the last command
-
 	qboolean	spectator;			// client is a spectator
 } client_respawn_t;
 
@@ -888,14 +888,12 @@ struct gclient_s
 	client_persistant_t	pers;
 	client_respawn_t	resp;
 	pmove_state_t		old_pmove;	// for detecting out-of-pmove changes
-	int				teamNumber;     // aal Added the team number of the player
 	qboolean	showscores;			// set layout stat
 	qboolean	showinventory;		// set layout stat
 	qboolean	showhelp;
 	qboolean	showhelpicon;
 
 	int			ammo_index;
-
 	int			buttons;
 	int			oldbuttons;
 	int			latched_buttons;
@@ -960,6 +958,8 @@ struct gclient_s
 
 	edict_t		*chase_target;		// player we are chasing
 	qboolean	update_chase;		// need to update chase info?
+	
+	
 };
 
 
@@ -973,7 +973,7 @@ struct edict_s
 
 	qboolean	inuse;
 	int			linkcount;
-	//int			frozenCounter;		//aal used to detect if a player should be frozen
+	
 	// FIXME: move these fields to a server private sv_entity_t
 	link_t		area;				// linked to a division node or leaf
 	
@@ -998,7 +998,8 @@ struct edict_s
 	//================================
 	int			movetype;
 	int			flags;
-
+	
+	//int			frozenCounter;		//aal used to detect if a player should be frozen
 	char		*model;
 	float		freetime;			// sv.time when the object was freed
 	
@@ -1008,9 +1009,7 @@ struct edict_s
 	char		*message;
 	char		*classname;
 	int			spawnflags;
-	int			teamNum;
 	float		timestamp;
-
 	float		angle;			// set in qe3, -1 = up, -2 = down
 	char		*target;
 	char		*targetname;
@@ -1056,6 +1055,7 @@ struct edict_s
 	int			max_health;
 	int			gib_health;
 	int			deadflag;
+	
 	qboolean	show_hostile;
 
 	float		powerarmor_time;

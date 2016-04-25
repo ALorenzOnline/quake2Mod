@@ -1228,8 +1228,7 @@ void ClientBeginDeathmatch (edict_t *ent)
 		gi.multicast (ent->s.origin, MULTICAST_PVS);
 	}
 
-	gi.bprintf (PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
-	gi.bprintf (PRINT_HIGH, "%s entered the game\n", ent->client->teamNum);//aal print teamNumber
+	//gi.bprintf (PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
 	// make sure all view stuff is valid
 	ClientEndServerFrame (ent);
 }
@@ -1248,12 +1247,10 @@ void ClientBegin (edict_t *ent)
 	int		i;
 
 	ent->client = game.clients + (ent - g_edicts - 1);
-
+	ent->client->teamNumber = 1;
 	if (deathmatch->value)
 	{
 		ClientBeginDeathmatch (ent);
-		ent->client->teamNum = 1;//aal set a team number
-		gi.dprintf("%s playerNum \n",ent->client->teamNum);//set a team number
 		return;
 	}
 
@@ -1292,8 +1289,8 @@ void ClientBegin (edict_t *ent)
 			gi.WriteShort (ent-g_edicts);
 			gi.WriteByte (MZ_LOGIN);
 			gi.multicast (ent->s.origin, MULTICAST_PVS);
-
-			gi.bprintf (PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
+			//gi.bprintf (PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
+			//gi.bprintf (PRINT_HIGH, "%s entered the game\n","1");
 		}
 	}
 

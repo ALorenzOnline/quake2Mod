@@ -1,0 +1,82 @@
+﻿Build started 4/24/2016 8:04:27 PM.
+     1>Project "C:\Users\Alex\Desktop\quake2Mod\quake2-3.21\ref_soft\ref_soft.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching ".\debug\ref_soft.unsuccessfulbuild".
+       CustomBuild:
+         Performing Custom Build Tools
+          Assembling: C:\Users\Alex\Desktop\quake2Mod\quake2-3.21\ref_soft\r_aclipa.asm
+         Microsoft (R) Macro Assembler Version 10.00.30319.01
+         Copyright (C) Microsoft Corporation.  All rights reserved.
+         
+         Performing Custom Build Tools
+          Assembling: C:\Users\Alex\Desktop\quake2Mod\quake2-3.21\ref_soft\r_draw16.asm
+         Microsoft (R) Macro Assembler Version 10.00.30319.01
+         Copyright (C) Microsoft Corporation.  All rights reserved.
+         
+         Performing Custom Build Tools
+          Assembling: C:\Users\Alex\Desktop\quake2Mod\quake2-3.21\ref_soft\r_drawa.asm
+         Microsoft (R) Macro Assembler Version 10.00.30319.01
+         Copyright (C) Microsoft Corporation.  All rights reserved.
+         
+         Performing Custom Build Tools
+         Microsoft (R) Macro Assembler Version 10.00.30319.01
+         Copyright (C) Microsoft Corporation.  All rights reserved.
+         
+          Assembling: C:\Users\Alex\Desktop\quake2Mod\quake2-3.21\ref_soft\r_edgea.asm
+         Performing Custom Build Tools
+          Assembling: C:\Users\Alex\Desktop\quake2Mod\quake2-3.21\ref_soft\r_polysa.asm
+         Microsoft (R) Macro Assembler Version 10.00.30319.01
+         Copyright (C) Microsoft Corporation.  All rights reserved.
+         
+         Performing Custom Build Tools
+          Assembling: C:\Users\Alex\Desktop\quake2Mod\quake2-3.21\ref_soft\r_scana.asm
+         Microsoft (R) Macro Assembler Version 10.00.30319.01
+         Copyright (C) Microsoft Corporation.  All rights reserved.
+         
+         Performing Custom Build Tools
+          Assembling: C:\Users\Alex\Desktop\quake2Mod\quake2-3.21\ref_soft\r_spr8.asm
+         Microsoft (R) Macro Assembler Version 10.00.30319.01
+         Copyright (C) Microsoft Corporation.  All rights reserved.
+         
+         Performing Custom Build Tools
+          Assembling: C:\Users\Alex\Desktop\quake2Mod\quake2-3.21\ref_soft\r_surf8.asm
+         Microsoft (R) Macro Assembler Version 10.00.30319.01
+         Copyright (C) Microsoft Corporation.  All rights reserved.
+         
+         Performing Custom Build Tools
+          Assembling: C:\Users\Alex\Desktop\quake2Mod\quake2-3.21\ref_soft\r_varsa.asm
+         Microsoft (R) Macro Assembler Version 10.00.30319.01
+         Copyright (C) Microsoft Corporation.  All rights reserved.
+         
+       ClCompile:
+         All outputs are up-to-date.
+       Link:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:".\..\debug\ref_soft.dll" /INCREMENTAL:NO /NOLOGO winmm.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /NODEFAULTLIB:libc /DEF:".\ref_soft.def" /MANIFEST /ManifestFile:".\debug\ref_soft.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Alex\Desktop\quake2Mod\quake2-3.21\debug\ref_soft.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\..\debug\ref_soft.lib" /MACHINE:X86 /DLL .\..\debug\\.obj
+         .\debug\q_shared.obj
+         .\debug\q_shwin.obj
+         .\debug\r_aclip.obj
+         .\debug\r_alias.obj
+         .\debug\r_bsp.obj
+         .\debug\r_draw.obj
+         .\debug\r_edge.obj
+         .\debug\r_image.obj
+         .\debug\r_light.obj
+         .\debug\r_main.obj
+         .\debug\r_misc.obj
+         .\debug\r_model.obj
+         .\debug\r_part.obj
+         .\debug\r_poly.obj
+         .\debug\r_polyse.obj
+         .\debug\r_rast.obj
+         .\debug\r_scan.obj
+         .\debug\r_sprite.obj
+         .\debug\r_surf.obj
+         .\debug\rw_ddraw.obj
+         .\debug\rw_dib.obj
+         .\debug\rw_imp.obj
+     1>LINK : fatal error LNK1181: cannot open input file '.\..\debug\\.obj'
+     1>Done Building Project "C:\Users\Alex\Desktop\quake2Mod\quake2-3.21\ref_soft\ref_soft.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.56

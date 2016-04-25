@@ -345,6 +345,8 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 
 void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, int effect, qboolean hyper)
 {
+	
+	int j;
 	edict_t	*bolt;
 	trace_t	tr;
 
@@ -389,6 +391,10 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 	{
 		VectorMA (bolt->s.origin, -10, dir, bolt->s.origin);
 		bolt->touch (bolt, tr.ent, NULL, NULL);
+
+		for(j = 0; j<MAX_CLIENTS;j++){
+			gi.bprintf (PRINT_HIGH, "%s entered the game\n", game.clients[j].pers.netname);
+		}
 	}
 }	
 

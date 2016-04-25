@@ -503,17 +503,13 @@ player_die
 void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)
 {
 	
-	if(self->health <= 0){
-		self->health = 100;
-	}
-	/*
 	int		n;
 
 	VectorClear (self->avelocity);
 
 	self->takedamage = DAMAGE_YES;
-	self->movetype = MOVETYPE_TOSS;
-
+	self->movetype = MOVETYPE_NONE;
+	self->client->ps.pmove.pm_type = PM_DEAD;
 	self->s.modelindex2 = 0;	// remove linked weapon model
 
 	self->s.angles[0] = 0;
@@ -524,9 +520,9 @@ void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damag
 
 	self->maxs[2] = -8;
 
-//	self->solid = SOLID_NOT;
+	self->solid = SOLID_NOT;
 	self->svflags |= SVF_DEADMONSTER;
-
+	
 	if (!self->deadflag)
 	{
 		self->client->respawn_time = level.time + 1.0;
@@ -599,7 +595,7 @@ void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damag
 	self->deadflag = DEAD_DEAD;
 
 	gi.linkentity (self);
-	*/
+	
 }
 
 //=======================================================================
@@ -630,7 +626,7 @@ void InitClientPersistant (gclient_t *client)
 	client->pers.max_bullets	= 200;
 	client->pers.max_shells		= 100;
 	client->pers.max_rockets	= 50;
-	client->pers.max_grenades	= 50;
+	client->pers.max_grenades	= 0;//aal no nades
 	client->pers.max_cells		= 200;
 	client->pers.max_slugs		= 50;
 
@@ -1278,10 +1274,10 @@ deathmatch mode, so clear everything out before starting them.
 */
 void ClientBeginDeathmatch (edict_t *ent)
 {
+
 	G_InitEdict (ent);
-
+	
 	InitClientResp (ent->client);
-
 	// locate ent at a spawn point
 	PutClientInServer (ent);
 
@@ -1299,6 +1295,9 @@ void ClientBeginDeathmatch (edict_t *ent)
 	}
 
 	gi.bprintf (PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
+	
+	
+	
 
 	// make sure all view stuff is valid
 	ClientEndServerFrame (ent);
@@ -1308,7 +1307,7 @@ void ClientBeginDeathmatch (edict_t *ent)
 /*
 ===========
 ClientBegin
-
+aal client begin
 called when a client has finished connecting, and is ready
 to be placed into the game.  This will happen every level load.
 ============
@@ -1316,9 +1315,8 @@ to be placed into the game.  This will happen every level load.
 void ClientBegin (edict_t *ent)
 {
 	int		i;
-
+	int		j;
 	ent->client = game.clients + (ent - g_edicts - 1);
-
 	if (deathmatch->value)
 	{
 		ClientBeginDeathmatch (ent);
@@ -1361,11 +1359,13 @@ void ClientBegin (edict_t *ent)
 			gi.WriteByte (MZ_LOGIN);
 			gi.multicast (ent->s.origin, MULTICAST_PVS);
 
-			gi.bprintf (PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
+			//gi.bprintf (PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
 		}
 	}
-
+	
 	// make sure all view stuff is valid
+	//aal search for clients if none of them start with a grenade give this one 1 grenade
+	
 	ClientEndServerFrame (ent);
 }
 
@@ -1395,6 +1395,7 @@ void ClientUserinfoChanged (edict_t *ent, char *userinfo)
 	strncpy (ent->client->pers.netname, s, sizeof(ent->client->pers.netname)-1);
 
 	// set spectator
+	//aal use this to set spectators
 	s = Info_ValueForKey (userinfo, "spectator");
 	// spectators are only supported in deathmatch
 	if (deathmatch->value && *s && strcmp(s, "0"))
