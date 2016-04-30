@@ -1142,6 +1142,7 @@ gitem_t	itemlist[] =
 	//
 
 /*QUAKED item_armor_body (.3 .3 1) (-16 -16 -16) (16 16 16)
+//aal 1
 */
 	{
 		"item_armor_body", 
@@ -1165,6 +1166,7 @@ gitem_t	itemlist[] =
 	},
 
 /*QUAKED item_armor_combat (.3 .3 1) (-16 -16 -16) (16 16 16)
+//aal 2
 */
 	{
 		"item_armor_combat", 
@@ -1188,6 +1190,7 @@ gitem_t	itemlist[] =
 	},
 
 /*QUAKED item_armor_jacket (.3 .3 1) (-16 -16 -16) (16 16 16)
+//aal 3
 */
 	{
 		"item_armor_jacket", 
@@ -1211,6 +1214,7 @@ gitem_t	itemlist[] =
 	},
 
 /*QUAKED item_armor_shard (.3 .3 1) (-16 -16 -16) (16 16 16)
+//aal 4
 */
 	{
 		"item_armor_shard", 
@@ -1235,6 +1239,7 @@ gitem_t	itemlist[] =
 
 
 /*QUAKED item_power_screen (.3 .3 1) (-16 -16 -16) (16 16 16)
+//aal 5
 */
 	{
 		"item_power_screen", 
@@ -1258,6 +1263,7 @@ gitem_t	itemlist[] =
 	},
 
 /*QUAKED item_power_shield (.3 .3 1) (-16 -16 -16) (16 16 16)
+//aal 6
 */
 	{
 		"item_power_shield",
@@ -1287,6 +1293,7 @@ gitem_t	itemlist[] =
 
 /* weapon_blaster (.3 .3 1) (-16 -16 -16) (16 16 16)
 always owned, never in the world
+//aal 7
 */
 	{
 		"weapon_blaster", 
@@ -1310,6 +1317,7 @@ always owned, never in the world
 	},
 
 /*QUAKED weapon_shotgun (.3 .3 1) (-16 -16 -16) (16 16 16)
+//aal 8
 */
 	{
 		"weapon_shotgun", 
@@ -1333,6 +1341,7 @@ always owned, never in the world
 	},
 
 /*QUAKED weapon_supershotgun (.3 .3 1) (-16 -16 -16) (16 16 16)
+//aal 9
 */
 	{
 		"weapon_supershotgun", 
@@ -1356,6 +1365,7 @@ always owned, never in the world
 	},
 
 /*QUAKED weapon_machinegun (.3 .3 1) (-16 -16 -16) (16 16 16)
+//aal 10
 */
 	{
 		"weapon_machinegun", 
@@ -1379,6 +1389,7 @@ always owned, never in the world
 	},
 
 /*QUAKED weapon_chaingun (.3 .3 1) (-16 -16 -16) (16 16 16)
+//aal 11
 */
 	{
 		"weapon_chaingun", 
@@ -1402,6 +1413,7 @@ always owned, never in the world
 	},
 
 /*QUAKED ammo_grenades (.3 .3 1) (-16 -16 -16) (16 16 16)
+//aal 12
 */
 	{
 		"ammo_grenades",

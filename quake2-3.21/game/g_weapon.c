@@ -463,22 +463,28 @@ static void Grenade_Explode (edict_t *ent)
 
 static void Grenade_Touch (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
-	if (other == ent->owner)
-		return;
 
+	gi.centerprintf( ent->owner, "ENTITY TOUCHED = %s\n", other->classname );
+	if (other == ent->owner){
+		ent->owner->client->pers.inventory[12]=1;
+		return;
+	}
 	if (surf && (surf->flags & SURF_SKY))
 	{
+		ent->owner->client->pers.inventory[12]=1;
 		G_FreeEdict (ent);
 		return;
 	}
 
 	if (!other->takedamage)
 	{
+		ent->owner->client->pers.inventory[12]=1;
 		if (ent->spawnflags & 1)
 		{
 			if (random() > 0.5)
 				gi.sound (ent, CHAN_VOICE, gi.soundindex ("weapons/hgrenb1a.wav"), 1, ATTN_NORM, 0);
 			else
+	
 				gi.sound (ent, CHAN_VOICE, gi.soundindex ("weapons/hgrenb2a.wav"), 1, ATTN_NORM, 0);
 		}
 		else
@@ -487,13 +493,25 @@ static void Grenade_Touch (edict_t *ent, edict_t *other, cplane_t *plane, csurfa
 		}
 		
 		
+	//	return;
+	}
+	//aal grenade pass
+	if(other->client){
+		other->client->pers.max_grenades=1;
+		other->client->pers.inventory[12]=1;
+		ent->owner->client->pers.max_grenades=0;
+		G_FreeEdict (ent);
 		return;
 	}
-
-	ent->enemy = other;
-	fire_bfg (ent,ent->s.origin -1, ent->s.origin, 4, 4,3);
-
-	Grenade_Explode (ent);
+	
+	ent->owner->client->pers.inventory[12]=1;
+		
+	
+	
+	
+	//ent->enemy = other;
+	G_FreeEdict (ent);
+	//Grenade_Explode (ent);
 }
 
 void fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius)
@@ -520,8 +538,8 @@ void fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int s
 	grenade->s.modelindex = gi.modelindex ("models/objects/grenade/tris.md2");
 	grenade->owner = self;
 	grenade->touch = Grenade_Touch;
-	grenade->nextthink = level.time + timer;
-	grenade->think = Grenade_Explode;
+	//grenade->nextthink = level.time + timer;
+	//grenade->think = Grenade_Explode;
 	grenade->dmg = damage;
 	grenade->dmg_radius = damage_radius;
 	grenade->classname = "grenade";
@@ -553,8 +571,8 @@ void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int 
 	grenade->s.modelindex = gi.modelindex ("models/objects/grenade2/tris.md2");
 	grenade->owner = self;
 	grenade->touch = Grenade_Touch;
-	grenade->nextthink = level.time + timer;
-	grenade->think = Grenade_Explode;
+	//grenade->nextthink = level.time + timer;
+	//grenade->think = Grenade_Explode;
 	grenade->dmg = damage;
 	grenade->dmg_radius = damage_radius;
 	grenade->classname = "hgrenade";

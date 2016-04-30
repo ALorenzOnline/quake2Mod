@@ -1,4 +1,4 @@
-﻿Build started 4/24/2016 8:01:53 PM.
+﻿Build started 4/28/2016 6:10:23 PM.
      1>Project "C:\Users\Alex\Desktop\quake2Mod\quake2-3.21\game\game.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating ".\debug\game.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -13,11 +13,12 @@
      1>c:\users\alex\desktop\quake2mod\quake2-3.21\game\p_hud.c(246): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
          p_client.c
-     1>c:\users\alex\desktop\quake2mod\quake2-3.21\game\p_client.c(1385): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\alex\desktop\quake2mod\quake2-3.21\game\p_client.c(1326): warning C4101: 'j' : unreferenced local variable
+     1>c:\users\alex\desktop\quake2mod\quake2-3.21\game\p_client.c(1398): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
-     1>c:\users\alex\desktop\quake2mod\quake2-3.21\game\p_client.c(1390): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\alex\desktop\quake2mod\quake2-3.21\game\p_client.c(1403): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(188) : see declaration of 'strncpy'
-     1>c:\users\alex\desktop\quake2mod\quake2-3.21\game\p_client.c(1431): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\alex\desktop\quake2mod\quake2-3.21\game\p_client.c(1444): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(188) : see declaration of 'strncpy'
          m_tank.c
          m_supertank.c
@@ -206,4 +207,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:06.56
+Time Elapsed 00:00:05.17

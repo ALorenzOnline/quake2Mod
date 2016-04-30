@@ -1259,8 +1259,16 @@ void PutClientInServer (edict_t *ent)
 
 	gi.linkentity (ent);
 
-	// force the current weapon up
+	// aal force the current weapon up
 	client->newweapon = client->pers.weapon;
+	if(game.ballsgiven == 0){
+		gi.bprintf (PRINT_HIGH, "%i entered the game\n", game.ballsgiven);
+		ent->client->pers.max_grenades=1;
+	
+		ent->client->pers.inventory[12]=1;
+	}
+
+
 	ChangeWeapon (ent);
 }
 

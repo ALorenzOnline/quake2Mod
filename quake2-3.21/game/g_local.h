@@ -289,7 +289,7 @@ typedef struct
 
 	// items
 	int			num_items;
-
+	int			ballsgiven;
 	qboolean	autosaved;
 } game_locals_t;
 
