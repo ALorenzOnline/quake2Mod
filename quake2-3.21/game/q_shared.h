@@ -1008,6 +1008,9 @@ typedef enum
 #define	STAT_FLASHES			15		// cleared each frame, 1 = health, 2 = armor
 #define STAT_CHASE				16
 #define STAT_SPECTATOR			17
+#define	STAT_SPLODE				18//aal splodeTimer
+#define	STAT_hasNade_Icon		19//aal nadeIcon
+#define	STAT_flashSplodeTime	20//aal flashing splode time
 
 #define	MAX_STATS				32
 

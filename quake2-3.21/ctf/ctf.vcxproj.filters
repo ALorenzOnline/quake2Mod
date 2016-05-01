@@ -2,15 +2,15 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{bf48dba8-ac01-4799-a59e-67515015af62}</UniqueIdentifier>
+      <UniqueIdentifier>{7ac074ee-00a6-4e61-a781-a9638b3210c1}</UniqueIdentifier>
       <Extensions>*.c</Extensions>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{bc165263-334d-4407-9cb9-8c714886472e}</UniqueIdentifier>
+      <UniqueIdentifier>{bb4ff4a3-5e9f-4fed-8c80-58c645b9db3d}</UniqueIdentifier>
       <Extensions>*.h</Extensions>
     </Filter>
     <Filter Include="Resource Files">
-      <UniqueIdentifier>{de7af3ed-b657-400f-a270-d3c9d911dd81}</UniqueIdentifier>
+      <UniqueIdentifier>{dec2c2b9-7446-47a4-98b7-2169d6bfe337}</UniqueIdentifier>
       <Extensions>*.def,*.res</Extensions>
     </Filter>
   </ItemGroup>

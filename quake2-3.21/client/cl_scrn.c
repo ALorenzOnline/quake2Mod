@@ -1104,6 +1104,22 @@ void SCR_ExecuteLayoutString (char *s)
 			SCR_DrawField (x, y, 0, width, value);
 			continue;
 		}
+		if (!strcmp(token, "splodeNum"))
+		{	// aal flash number draw a number
+			//token = COM_Parse (&s);
+			int color;
+			width = 3;
+			token = COM_Parse (&s);
+			value = cl.frame.playerstate.stats[STAT_SPLODE];
+			//aal
+			if (cl.frame.playerstate.stats[STAT_flashSplodeTime])
+				color = (cl.frame.serverframe>>2) & 1;		// flash
+			else
+				color=0;
+				
+			SCR_DrawField (x, y, color, width, value);
+			continue;
+		}
 
 		if (!strcmp(token, "hnum"))
 		{	// health number

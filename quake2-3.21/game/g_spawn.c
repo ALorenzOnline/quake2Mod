@@ -702,7 +702,7 @@ char *single_statusbar =
 "	pic	11 "
 "endif "
 ;
-
+//aal alter dm status bar shit
 char *dm_statusbar =
 "yb	-24 "
 
@@ -777,10 +777,29 @@ char *dm_statusbar =
   "xv 0 "
   "yb -68 "
   "string \"Chasing\" "
-  "xv 64 "
+  "xv 100 "
   "stat_string 16 "
 "endif "
+
+
+// aal splode Timer
+"if 18 "
+ "  xv 0 "
+ "  yb -72 "
+ "  splodeNum "
+"endif "
+
+// aal nade pic
+"if 19 "
+ "  xv -20 "
+ "  yb -72 "
+ "  pic 19 "
+"endif "
+
+
 ;
+
+
 
 
 /*QUAKED worldspawn (0 0 0) ?

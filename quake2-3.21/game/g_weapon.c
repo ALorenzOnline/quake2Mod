@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 #include "g_local.h"
-int a =0;
+
 
 /*
 =================
@@ -293,7 +293,6 @@ void fire_shotgun (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int k
 
 	for (i = 0; i < count; i++)
 		fire_lead (self, start, aimdir, damage, kick, TE_SHOTGUN, hspread, vspread, mod);
-
 }
 
 
@@ -345,8 +344,6 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 
 void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, int effect, qboolean hyper)
 {
-	
-	int j;
 	edict_t	*bolt;
 	trace_t	tr;
 
@@ -377,8 +374,6 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 	bolt->think = G_FreeEdict;
 	bolt->dmg = damage;
 	bolt->classname = "bolt";
-	
-	
 	if (hyper)
 		bolt->spawnflags = 1;
 	gi.linkentity (bolt);
@@ -391,23 +386,70 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 	{
 		VectorMA (bolt->s.origin, -10, dir, bolt->s.origin);
 		bolt->touch (bolt, tr.ent, NULL, NULL);
-
-		for(j = 0; j<MAX_CLIENTS;j++){
-			gi.bprintf (PRINT_HIGH, "%s entered the game\n", game.clients[j].pers.netname);
-		}
 	}
 }	
 
 
 /*
 =================
-fire_grenade
+aal player_splode
 =================
 */
+ void player_splode (edict_t *ent)
+{
+	vec3_t		origin;
+	int			mod;
+
+	if(!ent)
+		return;
+	if (ent->client)
+		PlayerNoise(ent, ent->s.origin, PNOISE_IMPACT);
+
+	//FIXME: if we are onground then raise our Z just a bit since we are a point?
+	if (ent)
+	{
+		float	points;
+		vec3_t	v;
+		vec3_t	dir;
+
+		VectorAdd (ent->mins, ent->maxs, v);
+		VectorMA (ent->s.origin, 0.5, v, v);
+		VectorSubtract (ent->s.origin, v, v);
+		points = 1000 - 0.5 * VectorLength (v);
+		VectorSubtract (ent->s.origin, ent->s.origin, dir);
+		T_Damage (ent, ent, ent, dir, ent->s.origin, vec3_origin, (int)points, (int)points, DAMAGE_RADIUS, MOD_HELD_GRENADE);
+	}
+
+	T_RadiusDamage(ent, ent, ent->dmg, NULL, 120 , MOD_G_SPLASH);
+
+	VectorMA (ent->s.origin, -0.02, ent->velocity, origin);
+	gi.WriteByte (svc_temp_entity);
+	if (ent->waterlevel)
+	{
+		if (ent->groundentity)
+			gi.WriteByte (TE_GRENADE_EXPLOSION_WATER);
+		else
+			gi.WriteByte (TE_ROCKET_EXPLOSION_WATER);
+	}
+	else
+	{
+		if (ent->groundentity)
+			gi.WriteByte (TE_GRENADE_EXPLOSION);
+		else
+			gi.WriteByte (TE_ROCKET_EXPLOSION);
+	}
+	gi.WritePosition (origin);
+	gi.multicast (ent->s.origin, MULTICAST_PHS);
+
+	//G_FreeEdict (ent);
+}
+
+
 static void Grenade_Explode (edict_t *ent)
 {
 	vec3_t		origin;
 	int			mod;
+
 
 	if (ent->owner->client)
 		PlayerNoise(ent->owner, ent->s.origin, PNOISE_IMPACT);
@@ -460,7 +502,6 @@ static void Grenade_Explode (edict_t *ent)
 
 	G_FreeEdict (ent);
 }
-
 static void Grenade_Touch (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
 
@@ -500,12 +541,13 @@ static void Grenade_Touch (edict_t *ent, edict_t *other, cplane_t *plane, csurfa
 		other->client->pers.max_grenades=1;
 		other->client->pers.inventory[12]=1;
 		ent->owner->client->pers.max_grenades=0;
+		game.playerSettoDie=other;
 		G_FreeEdict (ent);
 		return;
 	}
 	
 	ent->owner->client->pers.inventory[12]=1;
-		
+	game.playerSettoDie=ent->owner;
 	
 	
 	
@@ -513,6 +555,8 @@ static void Grenade_Touch (edict_t *ent, edict_t *other, cplane_t *plane, csurfa
 	G_FreeEdict (ent);
 	//Grenade_Explode (ent);
 }
+
+	
 
 void fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius)
 {
@@ -538,8 +582,8 @@ void fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int s
 	grenade->s.modelindex = gi.modelindex ("models/objects/grenade/tris.md2");
 	grenade->owner = self;
 	grenade->touch = Grenade_Touch;
-	//grenade->nextthink = level.time + timer;
-	//grenade->think = Grenade_Explode;
+	grenade->nextthink = level.time + timer;
+	grenade->think = Grenade_Explode;
 	grenade->dmg = damage;
 	grenade->dmg_radius = damage_radius;
 	grenade->classname = "grenade";
@@ -571,8 +615,8 @@ void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int 
 	grenade->s.modelindex = gi.modelindex ("models/objects/grenade2/tris.md2");
 	grenade->owner = self;
 	grenade->touch = Grenade_Touch;
-	//grenade->nextthink = level.time + timer;
-	//grenade->think = Grenade_Explode;
+	grenade->nextthink = level.time + timer;
+	grenade->think = Grenade_Explode;
 	grenade->dmg = damage;
 	grenade->dmg_radius = damage_radius;
 	grenade->classname = "hgrenade";
@@ -615,12 +659,7 @@ void rocket_touch (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *su
 		PlayerNoise(ent->owner, ent->s.origin, PNOISE_IMPACT);
 
 	// calculate position for the explosion entity
-	
 	VectorMA (ent->s.origin, -0.02, ent->velocity, origin);
-	
-	for( a = 0; a < 4 ; a = a + 1 ){
-		fire_grenade(ent,ent->s.origin,ent->s.origin,2,3,5,5);
-	}
 
 	if (other->takedamage)
 	{

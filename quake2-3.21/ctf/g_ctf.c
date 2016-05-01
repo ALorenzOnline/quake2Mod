@@ -1643,7 +1643,7 @@ void CTFTeam_f (edict_t *ent)
 	}
 
 	ent->health = 0;
-	//player_die (ent, ent, ent, 100000, vec3_origin);//aal remove death 
+	player_die (ent, ent, ent, 100000, vec3_origin);
 	// don't even bother waiting for death frames
 	ent->deadflag = DEAD_DEAD;
 	respawn (ent);

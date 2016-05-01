@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "g_local.h"
 
+
 game_locals_t	game;
 level_locals_t	level;
 game_import_t	gi;
@@ -305,7 +306,12 @@ void CheckDMRules (void)
 {
 	int			i;
 	gclient_t	*cl;
-
+	//gi.bprintf (PRINT_HIGH, "%f Timelimit.\n",timelimit->value*60);
+	if(level.time >= game.splodeTime){
+		gi.bprintf (PRINT_HIGH, "%s explode.\n","boom");
+		game.splodeTime=level.time+splodeSetTime;
+		player_splode(game.playerSettoDie);
+	}
 	if (level.intermissiontime)
 		return;
 

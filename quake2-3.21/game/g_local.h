@@ -231,6 +231,7 @@ typedef struct
 #define WEAP_RAILGUN			10
 #define WEAP_BFG				11
 
+#define	splodeSetTime			60 //aal splode time interval		
 typedef struct gitem_s
 {
 	char		*classname;	// spawning name
@@ -289,8 +290,11 @@ typedef struct
 
 	// items
 	int			num_items;
-	int			ballsgiven;
+	
 	qboolean	autosaved;
+	int			ballsgiven; //aal givin balls
+	float		splodeTime; //aal time to splode
+	edict_t		*playerSettoDie; // aal splodin players
 } game_locals_t;
 
 
@@ -734,6 +738,7 @@ void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int 
 void fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius, int radius_damage);
 void fire_rail (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick);
 void fire_bfg (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius);
+void player_splode (edict_t *ent);//aal forward player_splode
 
 //
 // g_ptrail.c
@@ -862,7 +867,6 @@ typedef struct
 	int			game_helpchanged;
 	int			helpchanged;
 
-
 	qboolean	spectator;			// client is a spectator
 } client_persistant_t;
 
@@ -873,6 +877,7 @@ typedef struct
 	int			enterframe;			// level.framenum the client entered the game
 	int			score;				// frags, etc
 	vec3_t		cmd_angles;			// angles sent over in the last command
+
 	qboolean	spectator;			// client is a spectator
 } client_respawn_t;
 
@@ -883,17 +888,19 @@ struct gclient_s
 	// known to server
 	player_state_t	ps;				// communicated by server to clients
 	int				ping;
-	
+
 	// private to game
 	client_persistant_t	pers;
 	client_respawn_t	resp;
 	pmove_state_t		old_pmove;	// for detecting out-of-pmove changes
+
 	qboolean	showscores;			// set layout stat
 	qboolean	showinventory;		// set layout stat
 	qboolean	showhelp;
 	qboolean	showhelpicon;
 
 	int			ammo_index;
+
 	int			buttons;
 	int			oldbuttons;
 	int			latched_buttons;
@@ -958,8 +965,6 @@ struct gclient_s
 
 	edict_t		*chase_target;		// player we are chasing
 	qboolean	update_chase;		// need to update chase info?
-	
-	
 };
 
 
@@ -973,7 +978,7 @@ struct edict_s
 
 	qboolean	inuse;
 	int			linkcount;
-	
+
 	// FIXME: move these fields to a server private sv_entity_t
 	link_t		area;				// linked to a division node or leaf
 	
@@ -998,8 +1003,7 @@ struct edict_s
 	//================================
 	int			movetype;
 	int			flags;
-	
-	//int			frozenCounter;		//aal used to detect if a player should be frozen
+
 	char		*model;
 	float		freetime;			// sv.time when the object was freed
 	
@@ -1009,7 +1013,9 @@ struct edict_s
 	char		*message;
 	char		*classname;
 	int			spawnflags;
+
 	float		timestamp;
+
 	float		angle;			// set in qe3, -1 = up, -2 = down
 	char		*target;
 	char		*targetname;
@@ -1055,7 +1061,6 @@ struct edict_s
 	int			max_health;
 	int			gib_health;
 	int			deadflag;
-	
 	qboolean	show_hostile;
 
 	float		powerarmor_time;

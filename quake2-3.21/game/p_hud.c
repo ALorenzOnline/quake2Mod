@@ -81,7 +81,6 @@ void BeginIntermission (edict_t *targ)
 	game.autosaved = false;
 
 	// respawn any dead clients
-	//aal use this later to prevent respawn
 	for (i=0 ; i<maxclients->value ; i++)
 	{
 		client = g_edicts + 1 + i;
@@ -521,6 +520,17 @@ void G_SetStats (edict_t *ent)
 		ent->client->ps.stats[STAT_HELPICON] = 0;
 
 	ent->client->ps.stats[STAT_SPECTATOR] = 0;
+
+	//aal display splode Timer
+	ent->client->ps.stats[STAT_SPLODE] = game.splodeTime - level.time;
+	if(ent->client->pers.inventory[12]){
+		ent->client->ps.stats[STAT_flashSplodeTime] = 1;
+		ent->client->ps.stats[STAT_hasNade_Icon] = gi.imageindex("a_grenades");
+	}
+	else{
+		ent->client->ps.stats[STAT_flashSplodeTime] = 0;
+		ent->client->ps.stats[STAT_hasNade_Icon] = 0;
+	}
 }
 
 /*

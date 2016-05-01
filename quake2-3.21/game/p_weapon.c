@@ -818,12 +818,7 @@ void Blaster_Fire (edict_t *ent, vec3_t g_offset, int damage, qboolean hyper, in
 	vec3_t	forward, right;
 	vec3_t	start;
 	vec3_t	offset;
-	float	damage_radius;
-	int		radius_damage;
 
-	damage = 100 + (int)(random() * 20.0);
-	radius_damage = 120;
-	damage_radius = 120;
 	if (is_quad)
 		damage *= 4;
 	AngleVectors (ent->client->v_angle, forward, right, NULL);
@@ -831,14 +826,9 @@ void Blaster_Fire (edict_t *ent, vec3_t g_offset, int damage, qboolean hyper, in
 	VectorAdd (offset, g_offset, offset);
 	P_ProjectSource (ent->client, ent->s.origin, offset, forward, right, start);
 
-	AngleVectors (ent->client->v_angle, forward, right, NULL);
-
 	VectorScale (forward, -2, ent->client->kick_origin);
 	ent->client->kick_angles[0] = -1;
 
-	VectorSet(offset, 8, 8, ent->viewheight-8);
-	P_ProjectSource (ent->client, ent->s.origin, offset, forward, right, start);
-	//fire_rocket (ent, start, forward, damage, 650, damage_radius, radius_damage);
 	fire_blaster (ent, start, forward, damage, 1000, effect, hyper);
 
 	// send muzzle flash
