@@ -1265,6 +1265,17 @@ void PutClientInServer (edict_t *ent)
 		game.playerSettoDie=ent;
 	}
 	
+	if(game.determineTeam == 1){
+		ent->teamNumber = 2;
+		game.determineTeam = 0;
+		gi.bprintf (PRINT_HIGH, "%i Your Team is\n", ent->teamNumber);
+	}
+	else{
+		ent->teamNumber = 1;
+		game.determineTeam = 1;
+		gi.bprintf (PRINT_HIGH, "%i your team is\n", ent->teamNumber);
+	}
+
 	
 	ChangeWeapon (ent);
 }

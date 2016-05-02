@@ -294,6 +294,13 @@ typedef struct
 	qboolean	autosaved;
 	int			ballsgiven; //aal givin balls
 	float		splodeTime; //aal time to splode
+	int			teamALeft;//aal Team A's total players
+	int			teamARounds;//aal rounds won by team A
+	int			teamBLeft;//aal Team B's total players
+	int			reamBrounds;//aal rounds won by team B
+	int			roundsLeft;//total number of rounds to be played befor game ends
+	int			determineTeam;//if 0 assign to team a else assign to team b
+
 	edict_t		*playerSettoDie; // aal splodin players
 } game_locals_t;
 
@@ -1115,5 +1122,6 @@ struct edict_s
 	// common data blocks
 	moveinfo_t		moveinfo;
 	monsterinfo_t	monsterinfo;
+	int			teamNumber;
 };
 

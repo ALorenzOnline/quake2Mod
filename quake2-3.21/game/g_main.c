@@ -307,6 +307,7 @@ void CheckDMRules (void)
 	int			i;
 	gclient_t	*cl;
 	//gi.bprintf (PRINT_HIGH, "%f Timelimit.\n",timelimit->value*60);
+	//aal if the level time = the splode timer we are going to kill the player that is set to die
 	if(level.time >= game.splodeTime){
 		gi.bprintf (PRINT_HIGH, "%s explode.\n","boom");
 		game.splodeTime=level.time+splodeSetTime;
