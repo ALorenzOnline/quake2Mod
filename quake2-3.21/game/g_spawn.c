@@ -784,18 +784,25 @@ char *dm_statusbar =
 
 // aal splode Timer
 "if 18 "
- "  xv 0 "
- "  yb -72 "
- "  splodeNum "
+"  xv 0 "
+"  yb -72 "
+"  splodeNum "
 "endif "
 
 // aal nade pic
+
 "if 19 "
- "  xv -20 "
- "  yb -72 "
- "  pic 19 "
+"  xv -20 "
+"  yb -72 "
+"  pic 19 "
 "endif "
 
+//aal team A Round
+"if 22 "
+ "  xv -20 "
+ "  yb -72 "
+ "  TBnum 3 14 "
+"endif "
 
 ;
 
@@ -999,5 +1006,7 @@ void SP_worldspawn (edict_t *ent)
 
 	// 63 testing
 	gi.configstring(CS_LIGHTS+63, "a");
+
+	//memset(game.teamskins,0,sizeof(game.teamskins[0]));
 }
 

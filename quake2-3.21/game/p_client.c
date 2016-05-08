@@ -588,7 +588,16 @@ void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damag
 			gi.sound (self, CHAN_VOICE, gi.soundindex(va("*death%i.wav", (rand()%4)+1)), 1, ATTN_NORM, 0);
 		}
 	}
-
+	//aal subtracts the from the team count when dead 
+	//this is nessecary to keep track of wins
+	if(self->teamLetter == 'c'){
+		game.teamA= game.teamA-1;
+		
+	}
+	if(self->teamLetter == 'b'){
+		game.teamB = game.teamB-1;
+		
+	}
 	self->deadflag = DEAD_DEAD;
 
 	gi.linkentity (self);
@@ -1104,7 +1113,7 @@ void PutClientInServer (edict_t *ent)
 	int		i;
 	client_persistant_t	saved;
 	client_respawn_t	resp;
-
+	char *skin;
 	// find a spawn point
 	// do it before setting health back up, so farthest
 	// ranging doesn't count this client
@@ -1254,27 +1263,56 @@ void PutClientInServer (edict_t *ent)
 
 	
 	client->newweapon = client->pers.weapon;
+	
+	
+	skin=Info_ValueForKey (ent->client->pers.userinfo, "skin");
+	gi.bprintf (PRINT_HIGH, "%s skin \n", skin);
+	
+	for(i=0; i < 2; i++){
+		if(!game.teamskins[i][0]){
+			strncpy(game.teamskins[i],skin,sizeof(game.teamskins[i]));//aal add skin to array
+			break;
+		}
+	}
+		
+	if(!strcmp(game.teamskins[0],skin)){
+		ent->teamLetter='c';
+		if(game.teamA==0){
+			game.teamA++;
+		}
+		//game.teamAStore[i] = ent;
+	
+	}
+	else if(!strcmp(game.teamskins[1],skin)){
+		ent->teamLetter='b';
+		game.teamB++;
+		//game.teamAStore[i] = ent;
+			
+	}
+
+	
+	
+	//entSkinNum=0;
+	//arraySkinNum=0;
+	gi.bprintf (PRINT_HIGH, "%iballs given=\n", game.ballsgiven);
+	gi.bprintf (PRINT_HIGH, "%s tEAM skin 0 \n", game.teamskins[0] );
+	gi.bprintf (PRINT_HIGH, "%s tEAM skin 1 \n", game.teamskins[1] );
+	gi.bprintf (PRINT_HIGH, "Team Members on A= %i \n", game.teamA);
+	gi.bprintf (PRINT_HIGH, "Team Members on B= %i \n", game.teamB);
 	//aal hand out the holy hand grenade
 	if(game.ballsgiven == 0){
 		gi.bprintf (PRINT_HIGH, "%i A ball was given\n", game.ballsgiven);
 		ent->client->pers.max_grenades=1;
 	
 		ent->client->pers.inventory[12]=1;
-		game.ballsgiven = 1;
+		game.ballsgiven = 0;
 		game.splodeTime=level.time+splodeSetTime;
 		game.playerSettoDie=ent;
+		gi.bprintf (PRINT_HIGH, "A ball was given %i \n", game.ballsgiven);
 	}
-	
-	if(game.determineTeam == 1){
-		ent->teamNumber = 2;
-		game.determineTeam = 0;
-		gi.bprintf (PRINT_HIGH, "%i Your Team is\n", ent->teamNumber);
-	}
-	else{
-		ent->teamNumber = 1;
-		game.determineTeam = 1;
-		gi.bprintf (PRINT_HIGH, "%i your team is\n", ent->teamNumber);
-	}
+	//gi.bprintf (PRINT_HIGH, "Your Team is %s \n",game.teamskins[0] );
+	gi.bprintf (PRINT_HIGH, " Your Team letter is %c \n",ent->teamLetter );
+	gi.bprintf (PRINT_HIGH, "Total players in game= %i \n", game.totalPlayers);
 
 	
 	ChangeWeapon (ent);
@@ -1537,13 +1575,23 @@ Will not be called between levels.
 void ClientDisconnect (edict_t *ent)
 {
 	int		playernum;
-
+	int		i;
 	if (!ent->client)
 		return;
 
 	gi.bprintf (PRINT_HIGH, "%s disconnected\n", ent->client->pers.netname);
 
 	// send effect
+	//aal remove player from the list ang game
+	for(i=0; i < 256; i++){
+		if( game.playersInGame[i]==ent->client->pers.netname){
+			
+			game.playersInGame[i]=NULL;
+			game.totalPlayers--;
+			break;
+		}
+	}
+
 	gi.WriteByte (svc_muzzleflash);
 	gi.WriteShort (ent-g_edicts);
 	gi.WriteByte (MZ_LOGOUT);

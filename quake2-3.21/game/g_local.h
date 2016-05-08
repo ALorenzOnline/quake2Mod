@@ -292,16 +292,20 @@ typedef struct
 	int			num_items;
 	
 	qboolean	autosaved;
-	int			ballsgiven; //aal givin balls
 	float		splodeTime; //aal time to splode
-	int			teamALeft;//aal Team A's total players
-	int			teamARounds;//aal rounds won by team A
-	int			teamBLeft;//aal Team B's total players
-	int			reamBrounds;//aal rounds won by team B
+	char		teamskins[2][32];
 	int			roundsLeft;//total number of rounds to be played befor game ends
 	int			determineTeam;//if 0 assign to team a else assign to team b
-
+	char		*playersInGame[24];
+	int			ballsgiven; //aal givin balls
+	int			teamA;	//used to track team sizes
+	int			teamB;	//used to track team sizes
+	int			roundsWonA; //team a wins
+	int			roundsWonB;	//team b wins
+	int			totalPlayers;//used to track all players in the game
+	int			gameStart;//aal if >1 the game will start counting rounds;
 	edict_t		*playerSettoDie; // aal splodin players
+	
 } game_locals_t;
 
 
@@ -613,6 +617,7 @@ extern	gitem_t	itemlist[];
 //
 void Cmd_Help_f (edict_t *ent);
 void Cmd_Score_f (edict_t *ent);
+char *ClientTeam(edict_t *ent);
 
 //
 // g_items.c
@@ -1123,5 +1128,8 @@ struct edict_s
 	moveinfo_t		moveinfo;
 	monsterinfo_t	monsterinfo;
 	int			teamNumber;
+	int			isFrozen;//aal 0 = not frozen 1=frozen
+	int			frozenThreshHold;//aal 0 = not frozen 100= what it takes to get frozen
+	char		teamLetter;//team letter
 };
 

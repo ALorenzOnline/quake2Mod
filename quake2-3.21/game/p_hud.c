@@ -506,7 +506,7 @@ void G_SetStats (edict_t *ent)
 	//
 	// frags
 	//
-	ent->client->ps.stats[STAT_FRAGS] = ent->client->resp.score;
+	ent->client->ps.stats[STAT_FRAGS] = game.roundsWonB; //ent->client->resp.score;
 
 	//
 	// help icon / current weapon if not shown
@@ -531,6 +531,10 @@ void G_SetStats (edict_t *ent)
 		ent->client->ps.stats[STAT_flashSplodeTime] = 0;
 		ent->client->ps.stats[STAT_hasNade_Icon] = 0;
 	}
+
+	//splay ze rowndz fer each team
+	ent->client->ps.stats[STAT_teamARounds] = game.roundsWonA;
+	ent->client->ps.stats[STAT_teamBRounds] = game.roundsWonB;
 }
 
 /*

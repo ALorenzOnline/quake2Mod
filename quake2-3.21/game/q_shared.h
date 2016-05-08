@@ -1011,6 +1011,8 @@ typedef enum
 #define	STAT_SPLODE				18//aal splodeTimer
 #define	STAT_hasNade_Icon		19//aal nadeIcon
 #define	STAT_flashSplodeTime	20//aal flashing splode time
+#define STAT_teamARounds		21//display team A rounds
+#define	STAT_teamBRounds		22//aal display B rounds
 
 #define	MAX_STATS				32
 

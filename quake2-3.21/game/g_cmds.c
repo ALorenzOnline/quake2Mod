@@ -32,6 +32,7 @@ char *ClientTeam (edict_t *ent)
 		return value;
 
 	strcpy(value, Info_ValueForKey (ent->client->pers.userinfo, "skin"));
+	gi.bprintf(PRINT_HIGH,"%s",value);
 	p = strchr(value, '/');
 	if (!p)
 		return value;

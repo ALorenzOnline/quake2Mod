@@ -1120,7 +1120,15 @@ void SCR_ExecuteLayoutString (char *s)
 			SCR_DrawField (x, y, color, width, value);
 			continue;
 		}
-
+		if (!strcmp(token, "TBnum"))
+		{	//aal draw a number
+			token = COM_Parse (&s);
+			width = 3;
+			token = COM_Parse (&s);
+			value =cl.frame.playerstate.stats[STAT_teamBRounds];;
+			SCR_DrawField (x, y, 0, width, value);
+			continue;
+		}
 		if (!strcmp(token, "hnum"))
 		{	// health number
 			int		color;
