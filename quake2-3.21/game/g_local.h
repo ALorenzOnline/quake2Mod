@@ -303,7 +303,7 @@ typedef struct
 	int			roundsWonA; //team a wins
 	int			roundsWonB;	//team b wins
 	int			totalPlayers;//used to track all players in the game
-	int			gameStart;//aal if >1 the game will start counting rounds;
+	int			gameStart;//aal if >1 the game will start counting rounds;	
 	edict_t		*playerSettoDie; // aal splodin players
 	
 } game_locals_t;

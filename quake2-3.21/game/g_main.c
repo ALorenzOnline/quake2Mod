@@ -307,6 +307,19 @@ void CheckDMRules (void)
 	int			i;
 	gclient_t	*cl;
 	//gi.bprintf (PRINT_HIGH, "%f Timelimit.\n",timelimit->value*60);
+	
+	//aal check if players are frozen every 30 seconds
+	//if(level.time >= game.splodeTime/2){
+		//for (i = 1; i <= maxclients->value; i++){
+		//	if (g_edicts[i].teamLetter=='b' && (g_edicts[i].frozenSwitch >=1)){
+		//		game.teamB--;
+	//		}
+		//	if (g_edicts[i].teamLetter=='c' && (g_edicts[i].frozenSwitch >=1)){
+	//			game.teamA--;
+	//		}
+		//}
+	//}
+	
 	//aal if the level time = the splode timer we are going to kill the player that is set to die
 	if(level.time >= game.splodeTime){
 		gi.bprintf (PRINT_HIGH, "%s explode.\n","boom");
@@ -354,6 +367,8 @@ void CheckDMRules (void)
 
 	if(game.roundsWonA==5){
 			gi.bprintf (PRINT_HIGH, "Team A Wins.\n");
+			game.roundsWonA=0;
+			game.roundsWonB=0;
 			EndDMLevel ();
 	}
 	if(game.roundsWonB==5){

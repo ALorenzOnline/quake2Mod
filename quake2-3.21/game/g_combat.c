@@ -434,6 +434,13 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 		damage=damage;
 		gi.bprintf(PRINT_HIGH,"NADE DAMAGE DONE 22 %i \n",damage);
 	}
+	else if(damage % 2 >= 1 && damage<700){
+		//targ->isFrozen=targ->isFrozen+damage;
+		//arg->client->ps.pmove.pm_type=PM_FREEZE;
+		//gi.bprintf(PRINT_HIGH,"frozen target %i",targ->isFrozen);
+		damage=0;
+		gi.bprintf(PRINT_HIGH,"NADE DAMAGE DONE 22 %i \n",damage);
+	}
 	meansOfDeath = mod;
 	gi.bprintf(PRINT_HIGH,"NADE DAMAGE DONE 6 %i \n",damage);
 	// easy mode takes half damage

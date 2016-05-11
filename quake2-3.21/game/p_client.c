@@ -1281,7 +1281,9 @@ void PutClientInServer (edict_t *ent)
 		ent->isFrozen=0;
 		ent->frozenSwitch=0;
 		game.teamA++;
-		game.totalPlayers++;
+		if(game.totalPlayers	!=	game.teamA+game.teamB){
+			game.totalPlayers++;
+		}
 		ent->client->pers.max_grenades=0;
 		//ent->client->pers.inventory[12]=1;
 		//game.teamAStore[i] = ent;
@@ -1290,14 +1292,17 @@ void PutClientInServer (edict_t *ent)
 	else if(!strcmp(game.teamskins[1],skin)){
 		ent->isFrozen=0;
 		ent->teamLetter='b';
-		//game.teamAStore[i] = ent;
-		game.totalPlayers++;
+		//game.teamAStore[i] = ent;;
 		ent->frozenSwitch=0;
 		ent->client->pers.max_grenades=0;
 		if(game.teamB==0){
 			game.gameStart++;
 		}
 		game.teamB++;
+		if(game.totalPlayers	!=	game.teamA+game.teamB){
+			game.totalPlayers++;
+		}
+		
 		//ent->client->pers.inventory[12]=1;
 			
 	}
@@ -1706,23 +1711,11 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		else if((ent->isFrozen>=100||client->isfrozen>=100) && ent->frozenSwitch==0){
 			ent->isFrozen=100;
 			ent->frozenSwitch++;
-			//gi.WriteByte (svc_temp_entity);
-			//gi.WriteByte (TE_RAILTRAIL);
-			//gi.WritePosition (ent->s.origin);
-			//gi.WritePosition (ent->s.origin-9);
-			//gi.multicast (ent->s.origin, MULTICAST_PHS);
 			gi.bprintf(PRINT_HIGH,"Player is frozen");
 			client->ps.pmove.pm_type = PM_DEAD;
 		}
 		else if((ent->isFrozen>=100||client->isfrozen>=100)){
 			ent->isFrozen=100;
-			ent->frozenSwitch++;
-			//gi.WriteByte (svc_temp_entity);
-			//gi.WriteByte (TE_RAILTRAIL);
-			//gi.WritePosition (ent->s.origin);
-			//gi.WritePosition (ent->s.origin-9);
-			//gi.multicast (ent->s.origin, MULTICAST_PHS);
-			//gi.bprintf(PRINT_HIGH,"Player is frozen");
 			client->ps.pmove.pm_type = PM_DEAD;
 		}
 		else
@@ -1861,12 +1854,7 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			UpdateChaseCam(other);
 	}
 
-	//fix teams if player is frozen
-	//if((ent->isFrozen>=100||client->isfrozen>=100) && ent->frozenSwitch>=1){
-		//if(ent->teamLetter == 'c'){
-		//	game.teamA--;
-	//	}
-	//}
+
 	
 }
 
@@ -1929,6 +1917,7 @@ void ClientBeginServerFrame (edict_t *ent)
 	if (!deathmatch->value)
 		if (!visible (ent, PlayerTrail_LastSpot() ) )
 			PlayerTrail_Add (ent->s.old_origin);
+
 
 	client->latched_buttons = 0;
 }

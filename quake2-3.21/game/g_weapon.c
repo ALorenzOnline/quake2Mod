@@ -462,6 +462,7 @@ aal player_splode
 	gi.WritePosition (origin);
 	gi.multicast (ent->s.origin, MULTICAST_PHS);
 
+	gi.bprintf(PRINT_HIGH, "%s HAS SPLODED!\n",ent->client->pers.netname);
 	//G_FreeEdict (ent);
 }
 
@@ -526,7 +527,7 @@ static void Grenade_Explode (edict_t *ent)
 static void Grenade_Touch (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
 
-	gi.centerprintf( ent->owner, "ENTITY TOUCHED = %s\n", other->classname );
+	gi.bprintf(PRINT_HIGH, "Tater has been passed to %s\n", other->classname );
 	if (other == ent->owner){
 		ent->owner->client->pers.inventory[12]=1;
 		return;
