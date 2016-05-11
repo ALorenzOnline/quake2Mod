@@ -332,6 +332,8 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 		gi.WriteByte (svc_temp_entity);
 		gi.WriteByte (TE_BLASTER);
 		gi.WritePosition (self->s.origin);
+
+
 		if (!plane)
 			gi.WriteDir (vec3_origin);
 		else
@@ -346,9 +348,11 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 {
 	edict_t	*bolt;
 	trace_t	tr;
+	vec3_t end;
 
 	VectorNormalize (dir);
-
+	VectorMA (start, 8192, dir, end);
+	tr = gi.trace (start, NULL, NULL, end, self, MASK_PLAYERSOLID);
 	bolt = G_Spawn();
 	bolt->svflags = SVF_DEADMONSTER;
 	// yes, I know it looks weird that projectiles are deadmonsters
@@ -367,7 +371,7 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 	VectorClear (bolt->mins);
 	VectorClear (bolt->maxs);
 	bolt->s.modelindex = gi.modelindex ("models/objects/laser/tris.md2");
-	bolt->s.sound = gi.soundindex ("misc/lasfly.wav");
+	//bolt->s.sound = gi.soundindex ("misc/lasfly.wav");
 	bolt->owner = self;
 	bolt->touch = blaster_touch;
 	bolt->nextthink = level.time + 2;
@@ -376,7 +380,13 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 	bolt->classname = "bolt";
 	if (hyper)
 		bolt->spawnflags = 1;
+	//aal shoot rail effect
 	gi.linkentity (bolt);
+	gi.WriteByte (svc_temp_entity);
+	gi.WriteByte (TE_RAILTRAIL);
+	gi.WritePosition (start);
+	gi.WritePosition (tr.endpos);
+	gi.multicast (self->s.origin, MULTICAST_PHS);
 
 	if (self->client)
 		check_dodge (self, bolt->s.origin, dir, speed);
@@ -399,7 +409,7 @@ aal player_splode
 {
 	vec3_t		origin;
 	int			mod;
-
+	int			i;
 	if(!ent)
 		return;
 	if (ent->client)
@@ -417,9 +427,19 @@ aal player_splode
 		VectorSubtract (ent->s.origin, v, v);
 		points = 1000 - 0.5 * VectorLength (v);
 		VectorSubtract (ent->s.origin, ent->s.origin, dir);
-		T_Damage (ent, ent, ent, dir, ent->s.origin, vec3_origin, (int)points, (int)points, DAMAGE_RADIUS, MOD_HELD_GRENADE);
+		T_Damage (ent, ent, ent, dir, ent->s.origin, vec3_origin, (int)points, (int)points, 10000000, MOD_HELD_GRENADE);
+		
+		for (i = 1; i <= maxclients->value; i++){
+			if (g_edicts[i].deadflag!=DEAD_DEAD){
+				//game.teamA++;
+				g_edicts[i].client->pers.max_grenades=1;
+				g_edicts[i].client->pers.inventory[12]=1;
+				break;
+			}
+		}
 	}
-
+	ent->client->pers.max_grenades=0;
+	ent->client->pers.inventory[12]=0;
 	T_RadiusDamage(ent, ent, ent->dmg, NULL, 120 , MOD_G_SPLASH);
 
 	VectorMA (ent->s.origin, -0.02, ent->velocity, origin);

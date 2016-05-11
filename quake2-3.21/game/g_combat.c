@@ -386,6 +386,30 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 	if (!targ->takedamage)
 		return;
 
+	//aal frozentest
+	if(damage>=900){
+		targ->isFrozen=targ->isFrozen+damage;
+		//targ->client->ps.pmove.pm_type=PM_FREEZE;
+		gi.bprintf(PRINT_HIGH,"frozen target %i",targ->isFrozen);
+		damage=damage;
+		gi.bprintf(PRINT_HIGH,"NADE DAMAGE DONE 1 %i \n",damage);
+		//targ->isFrozen=0;
+	}
+	else if(damage%2==0 && damage<800){
+		targ->isFrozen=targ->isFrozen+damage;
+		//arg->client->ps.pmove.pm_type=PM_FREEZE;
+		//gi.bprintf(PRINT_HIGH,"frozen target %i",targ->isFrozen);
+		damage=0;
+		gi.bprintf(PRINT_HIGH,"NADE DAMAGE DONE 2 %i \n",damage);
+		
+	}
+	else if(damage % 2 >= 1){
+		//targ->isFrozen=targ->isFrozen+damage;
+		//arg->client->ps.pmove.pm_type=PM_FREEZE;
+		//gi.bprintf(PRINT_HIGH,"frozen target %i",targ->isFrozen);
+		damage=0;
+		gi.bprintf(PRINT_HIGH,"NADE DAMAGE DONE 22 %i \n",damage);
+	}
 	// friendly fire avoidance
 	// if enabled you can't hurt teammates (but you can hurt yourself)
 	// knockback still occurs
@@ -393,14 +417,23 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 	{
 		if (OnSameTeam (targ, attacker))
 		{
-			if ((int)(dmflags->value) & DF_NO_FRIENDLY_FIRE)
-				damage = 0;
+			if ((int)(dmflags->value) & DF_NO_FRIENDLY_FIRE){
+				if(damage%2==1){
+					targ->isFrozen=targ->isFrozen-damage;
+					gi.bprintf(PRINT_HIGH,"target is melting %i",targ->isFrozen);
+					//damage=0;
+					gi.bprintf(PRINT_HIGH,"NADE DAMAGE DONE 4 %i \n",damage);
+				}
+				
+				gi.bprintf(PRINT_HIGH,"NADE DAMAGE DONE 5 %i \n",damage);
+			}
+
 			else
 				mod |= MOD_FRIENDLY_FIRE;
 		}
 	}
 	meansOfDeath = mod;
-
+	gi.bprintf(PRINT_HIGH,"NADE DAMAGE DONE 6 %i \n",damage);
 	// easy mode takes half damage
 	if (skill->value == 0 && deathmatch->value == 0 && targ->client)
 	{
@@ -417,14 +450,14 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 		te_sparks = TE_SPARKS;
 
 	VectorNormalize(dir);
-
+	gi.bprintf(PRINT_HIGH,"NADE DAMAGE DONE7 %i \n",damage);
 // bonus damage for suprising a monster
 	if (!(dflags & DAMAGE_RADIUS) && (targ->svflags & SVF_MONSTER) && (attacker->client) && (!targ->enemy) && (targ->health > 0))
 		damage *= 2;
 
 	if (targ->flags & FL_NO_KNOCKBACK)
 		knockback = 0;
-
+	gi.bprintf(PRINT_HIGH,"NADE DAMAGE DONE 8 %i \n",damage);
 // figure momentum add
 	if (!(dflags & DAMAGE_NO_KNOCKBACK))
 	{
@@ -449,7 +482,7 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 
 	take = damage;
 	save = 0;
-
+	gi.bprintf(PRINT_HIGH,"NADE DAMAGE DONE 9 %i \n",take);
 	// check for godmode
 	if ( (targ->flags & FL_GODMODE) && !(dflags & DAMAGE_NO_PROTECTION) )
 	{
@@ -516,13 +549,15 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 	}
 	else if (client)
 	{
-		if (!(targ->flags & FL_GODMODE) && (take))
+		if (!(targ->flags & FL_GODMODE) && (take)){
 			targ->pain (targ, attacker, knockback, take);
+		}
 	}
 	else if (take)
 	{
-		if (targ->pain)
-			targ->pain (targ, attacker, knockback, take);
+		if (targ->pain){
+			targ->pain (targ, attacker, knockback, take); //0 was take
+		}
 	}
 
 	// add to the damage inflicted on a player this frame

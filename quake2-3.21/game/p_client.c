@@ -587,6 +587,7 @@ void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damag
 			}
 			gi.sound (self, CHAN_VOICE, gi.soundindex(va("*death%i.wav", (rand()%4)+1)), 1, ATTN_NORM, 0);
 		}
+		
 	}
 	//aal subtracts the from the team count when dead 
 	//this is nessecary to keep track of wins
@@ -1268,6 +1269,7 @@ void PutClientInServer (edict_t *ent)
 	skin=Info_ValueForKey (ent->client->pers.userinfo, "skin");
 	gi.bprintf (PRINT_HIGH, "%s skin \n", skin);
 	
+	//aal set up teams
 	for(i=0; i < 2; i++){
 		if(!game.teamskins[i][0]){
 			strncpy(game.teamskins[i],skin,sizeof(game.teamskins[i]));//aal add skin to array
@@ -1277,16 +1279,22 @@ void PutClientInServer (edict_t *ent)
 		
 	if(!strcmp(game.teamskins[0],skin)){
 		ent->teamLetter='c';
-		if(game.teamA==0){
-			game.teamA++;
-		}
+		ent->isFrozen=0;
+		game.teamA++;
+		game.totalPlayers++;
+		ent->client->pers.max_grenades=0;
+		//ent->client->pers.inventory[12]=1;
 		//game.teamAStore[i] = ent;
 	
 	}
 	else if(!strcmp(game.teamskins[1],skin)){
+		ent->isFrozen=0;
 		ent->teamLetter='b';
 		game.teamB++;
 		//game.teamAStore[i] = ent;
+		game.totalPlayers++;
+		ent->client->pers.max_grenades=0;
+		//ent->client->pers.inventory[12]=1;
 			
 	}
 
@@ -1309,6 +1317,7 @@ void PutClientInServer (edict_t *ent)
 		game.splodeTime=level.time+splodeSetTime;
 		game.playerSettoDie=ent;
 		gi.bprintf (PRINT_HIGH, "A ball was given %i \n", game.ballsgiven);
+		game.ballsgiven++;
 	}
 	//gi.bprintf (PRINT_HIGH, "Your Team is %s \n",game.teamskins[0] );
 	gi.bprintf (PRINT_HIGH, " Your Team letter is %c \n",ent->teamLetter );
@@ -1654,9 +1663,9 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 	edict_t	*other;
 	int		i, j;
 	pmove_t	pm;
-
 	level.current_entity = ent;
 	client = ent->client;
+
 
 	if (level.intermissiontime)
 	{
@@ -1687,6 +1696,11 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			client->ps.pmove.pm_type = PM_GIB;
 		else if (ent->deadflag)
 			client->ps.pmove.pm_type = PM_DEAD;
+		//aal added in
+		else if(ent->isFrozen>=100||client->isfrozen>=100){
+			ent->isFrozen=100;
+			client->ps.pmove.pm_type = PM_DEAD;
+		}
 		else
 			client->ps.pmove.pm_type = PM_NORMAL;
 

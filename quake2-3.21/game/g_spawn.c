@@ -792,17 +792,22 @@ char *dm_statusbar =
 // aal nade pic
 
 "if 19 "
-"  xv -20 "
+" xv -20 "
 "  yb -72 "
 "  pic 19 "
 "endif "
 
 //aal team A Round
-"if 22 "
- "  xv -20 "
- "  yb -72 "
- "  TBnum 3 14 "
-"endif "
+"xr	-620 "
+"yt 2 "
+"  TAnum  "
+
+
+//aal team B Round
+
+"xr	-600 "
+"yt 2 "
+"  TBnum  "
 
 ;
 
