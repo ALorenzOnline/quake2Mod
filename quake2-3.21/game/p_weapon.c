@@ -849,9 +849,9 @@ void Weapon_Blaster_Fire (edict_t *ent)
 	int		damage;
 
 	if (deathmatch->value)
-		damage = 5;
+		damage = 4;
 	else
-		damage = 5;
+		damage = 4;
 	Blaster_Fire (ent, vec3_origin, damage, false, EF_BLASTER);
 	ent->client->ps.gunframe++;
 }
@@ -956,7 +956,7 @@ void Machinegun_Fire (edict_t *ent)
 	vec3_t		start;
 	vec3_t		forward, right;
 	vec3_t		angles;
-	int			damage = 8;
+	int			damage = 7;
 	int			kick = 2;
 	vec3_t		offset;
 
@@ -1054,11 +1054,17 @@ void Chaingun_Fire (edict_t *ent)
 	vec3_t		offset;
 	int			damage;
 	int			kick = 2;
+	trace_t		tr;
+	vec3_t end;
 
+
+	VectorNormalize (forward);
+	VectorMA (start, 8192, forward, end);
+	tr = gi.trace (start, NULL, NULL, end, ent, MASK_PLAYERSOLID);
 	if (deathmatch->value)
-		damage = 6;
+		damage = 3;
 	else
-		damage = 8;
+		damage = 3;
 
 	if (ent->client->ps.gunframe == 5)
 		gi.sound(ent, CHAN_AUTO, gi.soundindex("weapons/chngnu1a.wav"), 1, ATTN_IDLE, 0);
@@ -1152,11 +1158,18 @@ void Chaingun_Fire (edict_t *ent)
 	}
 
 	// send muzzle flash
+
 	gi.WriteByte (svc_muzzleflash);
 	gi.WriteShort (ent-g_edicts);
 	gi.WriteByte ((MZ_CHAINGUN1 + shots - 1) | is_silenced);
 	gi.multicast (ent->s.origin, MULTICAST_PVS);
-
+	gi.WriteByte (svc_temp_entity);
+	gi.WriteByte (TE_SPLASH);
+	gi.WriteByte (8);
+	gi.WritePosition (ent->s.origin);
+	gi.WriteDir (tr.endpos);
+	gi.WriteByte (SPLASH_LAVA);
+	gi.multicast (ent->s.origin, MULTICAST_PVS);
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
 	if (! ( (int)dmflags->value & DF_INFINITE_AMMO ) )

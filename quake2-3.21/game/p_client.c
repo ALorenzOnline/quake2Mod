@@ -1268,7 +1268,6 @@ void PutClientInServer (edict_t *ent)
 	
 	skin=Info_ValueForKey (ent->client->pers.userinfo, "skin");
 	gi.bprintf (PRINT_HIGH, "%s skin \n", skin);
-	
 	//aal set up teams
 	for(i=0; i < 2; i++){
 		if(!game.teamskins[i][0]){
@@ -1280,6 +1279,7 @@ void PutClientInServer (edict_t *ent)
 	if(!strcmp(game.teamskins[0],skin)){
 		ent->teamLetter='c';
 		ent->isFrozen=0;
+		ent->frozenSwitch=0;
 		game.teamA++;
 		game.totalPlayers++;
 		ent->client->pers.max_grenades=0;
@@ -1290,10 +1290,14 @@ void PutClientInServer (edict_t *ent)
 	else if(!strcmp(game.teamskins[1],skin)){
 		ent->isFrozen=0;
 		ent->teamLetter='b';
-		game.teamB++;
 		//game.teamAStore[i] = ent;
 		game.totalPlayers++;
+		ent->frozenSwitch=0;
 		ent->client->pers.max_grenades=0;
+		if(game.teamB==0){
+			game.gameStart++;
+		}
+		game.teamB++;
 		//ent->client->pers.inventory[12]=1;
 			
 	}
@@ -1302,6 +1306,7 @@ void PutClientInServer (edict_t *ent)
 	
 	//entSkinNum=0;
 	//arraySkinNum=0;
+	gi.bprintf (PRINT_HIGH, "%i game start=\n",game.gameStart);
 	gi.bprintf (PRINT_HIGH, "%iballs given=\n", game.ballsgiven);
 	gi.bprintf (PRINT_HIGH, "%s tEAM skin 0 \n", game.teamskins[0] );
 	gi.bprintf (PRINT_HIGH, "%s tEAM skin 1 \n", game.teamskins[1] );
@@ -1665,6 +1670,7 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 	pmove_t	pm;
 	level.current_entity = ent;
 	client = ent->client;
+	
 
 
 	if (level.intermissiontime)
@@ -1697,8 +1703,26 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		else if (ent->deadflag)
 			client->ps.pmove.pm_type = PM_DEAD;
 		//aal added in
-		else if(ent->isFrozen>=100||client->isfrozen>=100){
+		else if((ent->isFrozen>=100||client->isfrozen>=100) && ent->frozenSwitch==0){
 			ent->isFrozen=100;
+			ent->frozenSwitch++;
+			//gi.WriteByte (svc_temp_entity);
+			//gi.WriteByte (TE_RAILTRAIL);
+			//gi.WritePosition (ent->s.origin);
+			//gi.WritePosition (ent->s.origin-9);
+			//gi.multicast (ent->s.origin, MULTICAST_PHS);
+			gi.bprintf(PRINT_HIGH,"Player is frozen");
+			client->ps.pmove.pm_type = PM_DEAD;
+		}
+		else if((ent->isFrozen>=100||client->isfrozen>=100)){
+			ent->isFrozen=100;
+			ent->frozenSwitch++;
+			//gi.WriteByte (svc_temp_entity);
+			//gi.WriteByte (TE_RAILTRAIL);
+			//gi.WritePosition (ent->s.origin);
+			//gi.WritePosition (ent->s.origin-9);
+			//gi.multicast (ent->s.origin, MULTICAST_PHS);
+			//gi.bprintf(PRINT_HIGH,"Player is frozen");
 			client->ps.pmove.pm_type = PM_DEAD;
 		}
 		else
@@ -1836,6 +1860,14 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		if (other->inuse && other->client->chase_target == ent)
 			UpdateChaseCam(other);
 	}
+
+	//fix teams if player is frozen
+	//if((ent->isFrozen>=100||client->isfrozen>=100) && ent->frozenSwitch>=1){
+		//if(ent->teamLetter == 'c'){
+		//	game.teamA--;
+	//	}
+	//}
+	
 }
 
 
@@ -1875,9 +1907,11 @@ void ClientBeginServerFrame (edict_t *ent)
 		// wait for any button just going down
 		if ( level.time > client->respawn_time)
 		{
-			// in deathmatch, only wait for attack button
-			if (deathmatch->value)
-				buttonMask = BUTTON_ATTACK;
+			// in deathmatch, only wait for attack button 
+			//aal made it so the prawn cant respawn
+			if (deathmatch->value){
+				//buttonMask = BUTTON_ATTACK;
+			}
 			else
 				buttonMask = -1;
 

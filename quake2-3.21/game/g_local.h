@@ -973,6 +973,7 @@ struct gclient_s
 	float		flood_when[10];		// when messages were said
 	int			flood_whenhead;		// head pointer for when said
 	int			isfrozen;			//aal detects if player is frozen
+	int			frozenSwitch;
 	float		respawn_time;		// can respawn when time > this
 	edict_t		*chase_target;		// player we are chasing
 	qboolean	update_chase;		// need to update chase info?
@@ -1129,6 +1130,7 @@ struct edict_s
 	int			teamNumber;
 	int			isFrozen;//aal 0 = not frozen 1=frozen
 	int			frozenThreshHold;//aal 0 = not frozen 100= what it takes to get frozen
+	int			frozenSwitch;
 	char		teamLetter;//team letter
 };
 

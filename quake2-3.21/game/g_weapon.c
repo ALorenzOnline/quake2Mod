@@ -370,7 +370,7 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 	bolt->s.effects |= effect;
 	VectorClear (bolt->mins);
 	VectorClear (bolt->maxs);
-	bolt->s.modelindex = gi.modelindex ("models/objects/laser/tris.md2");
+	//bolt->s.modelindex = gi.modelindex ("models/objects/laser/tris.md2");
 	//bolt->s.sound = gi.soundindex ("misc/lasfly.wav");
 	bolt->owner = self;
 	bolt->touch = blaster_touch;
@@ -434,6 +434,7 @@ aal player_splode
 				//game.teamA++;
 				g_edicts[i].client->pers.max_grenades=1;
 				g_edicts[i].client->pers.inventory[12]=1;
+				game.playerSettoDie=&g_edicts[i];
 				break;
 			}
 		}

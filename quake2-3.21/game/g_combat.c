@@ -403,13 +403,7 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 		gi.bprintf(PRINT_HIGH,"NADE DAMAGE DONE 2 %i \n",damage);
 		
 	}
-	else if(damage % 2 >= 1){
-		//targ->isFrozen=targ->isFrozen+damage;
-		//arg->client->ps.pmove.pm_type=PM_FREEZE;
-		//gi.bprintf(PRINT_HIGH,"frozen target %i",targ->isFrozen);
-		damage=0;
-		gi.bprintf(PRINT_HIGH,"NADE DAMAGE DONE 22 %i \n",damage);
-	}
+
 	// friendly fire avoidance
 	// if enabled you can't hurt teammates (but you can hurt yourself)
 	// knockback still occurs
@@ -418,19 +412,27 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 		if (OnSameTeam (targ, attacker))
 		{
 			if ((int)(dmflags->value) & DF_NO_FRIENDLY_FIRE){
-				if(damage%2==1){
+				if(damage % 2 >=1){
 					targ->isFrozen=targ->isFrozen-damage;
 					gi.bprintf(PRINT_HIGH,"target is melting %i",targ->isFrozen);
-					//damage=0;
+					damage=0;
 					gi.bprintf(PRINT_HIGH,"NADE DAMAGE DONE 4 %i \n",damage);
 				}
-				
+				damage=0;
 				gi.bprintf(PRINT_HIGH,"NADE DAMAGE DONE 5 %i \n",damage);
 			}
 
 			else
 				mod |= MOD_FRIENDLY_FIRE;
 		}
+	}
+
+	if(damage % 2 >= 1 && damage>700){
+		//targ->isFrozen=targ->isFrozen+damage;
+		//arg->client->ps.pmove.pm_type=PM_FREEZE;
+		//gi.bprintf(PRINT_HIGH,"frozen target %i",targ->isFrozen);
+		damage=damage;
+		gi.bprintf(PRINT_HIGH,"NADE DAMAGE DONE 22 %i \n",damage);
 	}
 	meansOfDeath = mod;
 	gi.bprintf(PRINT_HIGH,"NADE DAMAGE DONE 6 %i \n",damage);

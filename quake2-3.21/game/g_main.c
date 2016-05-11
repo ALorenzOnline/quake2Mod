@@ -329,7 +329,7 @@ void CheckDMRules (void)
 		}
 	}
 	//aal check to see if a round is won
-	if(game.teamA==0 && game.totalPlayers>1 ){
+	if(game.teamA<=0 && game.gameStart>=1){
 		game.roundsWonB++;
 		gi.bprintf (PRINT_HIGH, "team b won a round. %i \n",game.roundsWonB);
 		for (i = 1; i <= maxclients->value; i++)
@@ -340,7 +340,7 @@ void CheckDMRules (void)
 	}
 	//game.roundsWonB=game.roundsWonB+1;
 		//gi.bprintf (PRINT_HIGH, "B Won %i rounds \n", game.roundsWonB);
-	if(game.teamB==0 && game.totalPlayers>1){
+	if(game.teamB<=0 && game.gameStart>=1){
 		game.roundsWonA++;
 		gi.bprintf (PRINT_HIGH, "team A won a round. %i \n",game.roundsWonA);
 		for (i = 1; i <= maxclients->value; i++){
@@ -350,6 +350,15 @@ void CheckDMRules (void)
 			}
 		}
 
+	}
+
+	if(game.roundsWonA==5){
+			gi.bprintf (PRINT_HIGH, "Team A Wins.\n");
+			EndDMLevel ();
+	}
+	if(game.roundsWonB==5){
+			gi.bprintf (PRINT_HIGH, "Team B Wins.\n");
+			EndDMLevel ();
 	}
 	if (fraglimit->value)
 	{
